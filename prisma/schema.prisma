@@ -14,6 +14,19 @@ enum TranslateType {
   @@map("translate_type")
 }
 
+enum BannerPriority {
+  first  @map("first")
+  second @map("second")
+  third  @map("third")
+  fourth @map("fourth")
+  fifth  @map("fifth")
+}
+
+enum Status {
+  active   @map("active")
+  inactive @map("inactive")
+}
+
 model Language {
   id         String       @default(dbgenerated("GEN_RANDOM_UUID()")) @map("id") @db.Uuid
   code       String       @map("code") @db.VarChar(2)
@@ -47,4 +60,42 @@ model Definition {
 
   @@id([id])
   @@map("definition")
+}
+
+model Banner {
+  id     String @default(dbgenerated("GEN_RANDOM_UUID()")) @map("id") @db.Uuid
+  image  String @db.VarChar()
+  status String @map("status")
+
+  @@id([id])
+  @@map("banner")
+}
+
+model Category {
+  id          String     @default(dbgenerated("GEN_RANDOM_UUID()")) @map("id") @db.Uuid
+  name        String     @map("name") @db.Uuid
+  subcategory Category[] @relation("subcategory")
+  category    Category?  @relation("subcategory", fields: [parentId], references: [id])
+  parentId    String?    @map("parent_id") @db.Uuid
+  product     Product[]
+
+  @@id([id])
+  @@map("category")
+}
+
+model Product {
+  id          String   @default(dbgenerated("GEN_RANDOM_UUID()")) @map("id") @db.Uuid
+  title       String   @map("title") @db.Uuid
+  images      String[] @map("images")
+  rating      String   @map("rating") @db.VarChar(4)
+  count       Int      @map("count") @db.Integer
+  description String   @map("description") @db.Uuid
+  price       Int      @map("price") @db.Integer
+  sale        Int      @map("sale") @db.Integer
+  categoryId  String   @map("category_id") @db.Uuid
+
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([id])
+  @@map("product")
 }
