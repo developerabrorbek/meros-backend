@@ -27,6 +27,23 @@ enum Status {
   inactive @map("inactive")
 }
 
+enum GenderType {
+  male   @map("male")
+  female @map("female")
+}
+
+enum RolesType {
+  user        @map("user")
+  super_admin @map("super_admin")
+  admin       @map("admin")
+}
+
+enum OrderStatus {
+  completed @map("completed")
+  shipped   @map("shippped")
+  cancelled @map("cancelled")
+}
+
 model Language {
   id         String       @default(dbgenerated("GEN_RANDOM_UUID()")) @map("id") @db.Uuid
   code       String       @map("code") @db.VarChar(2)
@@ -74,6 +91,7 @@ model Banner {
 model Category {
   id          String     @default(dbgenerated("GEN_RANDOM_UUID()")) @map("id") @db.Uuid
   name        String     @map("name") @db.Uuid
+  image       String     @map("image") @db.VarChar()
   subcategory Category[] @relation("subcategory")
   category    Category?  @relation("subcategory", fields: [parentId], references: [id])
   parentId    String?    @map("parent_id") @db.Uuid
@@ -95,7 +113,57 @@ model Product {
   categoryId  String   @map("category_id") @db.Uuid
 
   category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  orders    Order[]
 
   @@id([id])
   @@map("product")
+}
+
+model User {
+  id         String       @default(dbgenerated("GEN_RANDOM_UUID()")) @map("id") @db.Uuid
+  name       String       @map("name") @db.Uuid
+  year       String       @map("year") @db.VarChar(4)
+  gender     GenderType   @map("gender")
+  image      String?       @map("image") @db.VarChar()
+  phone      String       @map("phone_number") @db.VarChar()
+  email      String       @map("email") @db.VarChar()
+  username   String       @map("username") @db.VarChar()
+  password   String       @map("password") @db.VarChar()
+  role       RolesType    @map("role")
+  userDevice UserDevice[]
+  orders      Order[]
+
+  @@id([id])
+  @@map("user")
+}
+
+model UserDevice {
+  id           String  @default(dbgenerated("GEN_RANDOM_UUID()")) @map("id") @db.Uuid
+  userAgent    String? @map("user_agent") @db.VarChar()
+  accessToken  String  @map("access_token") @db.VarChar()
+  refreshToken String  @map("refresh_token") @db.VarChar()
+  ip           String? @map("ip") @db.VarChar()
+  userId       String  @map("user_id") @db.Uuid
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([id])
+  @@map("user_device")
+}
+
+model Order {
+  id           String      @default(dbgenerated("GEN_RANDOM_UUID()")) @map("id") @db.Uuid
+  ordered_time DateTime    @default(now()) @db.Timestamp()
+  destination  String      @map("destination") @db.VarChar()
+  longitude    String?     @map("longitude") @db.VarChar()
+  latitude     String?     @map("latitude") @db.VarChar()
+  status       OrderStatus @map("status")
+  userId       String      @map("user_id") @db.Uuid
+  productId    String      @map("product_id") @db.Uuid
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([id])
+  @@map("order")
 }
