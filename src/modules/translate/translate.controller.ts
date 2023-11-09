@@ -30,15 +30,6 @@ export class TranslateController {
     this.#_service = service;
   }
 
-  @ApiBody({
-    type: CreateTranslateDto,
-    required: true,
-  })
-  @Post()
-  async createTranslate(@Body() payload: CreateTranslateDto): Promise<void> {
-    await this.#_service.createTranslate(payload);
-  }
-
   @Get()
   async getTranslateList(): Promise<Translate[]> {
     return await this.#_service.getTranslateList();
@@ -63,6 +54,16 @@ export class TranslateController {
       translateId,
     });
   }
+  
+  @ApiBody({
+    type: CreateTranslateDto,
+    required: true,
+  })
+  @Post()
+  async createTranslate(@Body() payload: CreateTranslateDto): Promise<void> {
+    await this.#_service.createTranslate(payload);
+  }
+
 
   @ApiParam({
     name: 'id',

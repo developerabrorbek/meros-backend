@@ -1,15 +1,14 @@
 import { $Enums, TranslateType } from '@prisma/client';
 import { CreateTranslateInterface } from '../interfaces';
-import { IsObject, IsString, MaxLength, IsEnum } from 'class-validator';
+import { IsObject, IsString, IsEnum } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateTranslateDto implements CreateTranslateInterface {
   @ApiProperty({
-    example: 'uz',
+    example: 'create_hello_translate',
     required: true,
   })
   @IsString()
-  @MaxLength(2)
   code: string;
 
   @ApiProperty({
