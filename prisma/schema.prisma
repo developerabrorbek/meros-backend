@@ -113,7 +113,7 @@ model Product {
   categoryId  String   @map("category_id") @db.Uuid
 
   category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  orders    Order[]
+  orders   Order[]
 
   @@id([id])
   @@map("product")
@@ -124,14 +124,14 @@ model User {
   name       String       @map("name") @db.Uuid
   year       String       @map("year") @db.VarChar(4)
   gender     GenderType   @map("gender")
-  image      String?       @map("image") @db.VarChar()
+  image      String?      @map("image") @db.VarChar()
   phone      String       @map("phone_number") @db.VarChar()
   email      String       @map("email") @db.VarChar()
   username   String       @map("username") @db.VarChar()
   password   String       @map("password") @db.VarChar()
   role       RolesType    @map("role")
   userDevice UserDevice[]
-  orders      Order[]
+  orders     Order[]
 
   @@id([id])
   @@map("user")
