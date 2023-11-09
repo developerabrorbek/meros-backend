@@ -1,8 +1,12 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Client } from 'minio';
 import { MinioUploadRequest, MinioUploadResponse } from './interfaces';
-import sharp from 'sharp';
+import * as sharp from 'sharp';
 import { randomUUID } from 'crypto';
 
 @Injectable()
@@ -19,18 +23,23 @@ export class MinioService {
   }
 
   async uploadImage(payload: MinioUploadRequest): Promise<MinioUploadResponse> {
-    const file = Buffer.from(payload.file.split(';base64,')[1], 'base64');
-    const { format } = await sharp(file).metadata();
-    const objectName = randomUUID();
-    const res = await this.#_client.putObject(
-      payload.bucket,
-      `/${objectName}.${format}`,
-      file,
-    );
-    if (!res.etag)
-      throw new InternalServerErrorException('Error while uploading image');
-    return {
-      image: `${payload.bucket}/${objectName}.${format}`,
-    };
+    // const file = Buffer.from(payload.file.split(';base64,')[1], 'base64');
+    try {
+      const file = Buffer.from(payload.file, 'base64');
+      const { format } = await sharp(file).metadata();
+      const objectName = randomUUID();
+      const res = await this.#_client.putObject(
+        payload.bucket,
+        `/${objectName}.${format}`,
+        file,
+      );
+      if (!res.etag)
+        throw new InternalServerErrorException('Error while uploading image');
+      return {
+        image: `${payload.bucket}/${objectName}.${format}`,
+      };
+    } catch (error) {
+      throw new ConflictException('Error on uploading image');
+    }
   }
 }

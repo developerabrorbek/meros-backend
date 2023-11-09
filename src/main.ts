@@ -2,15 +2,19 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as bodyParser from 'body-parser'
 import { AppModule } from './app';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    bodyParser: true
+  });
 
+  // app.use(bodyParser)
   app.disable('x-powered-by', 'X-Powered-By', 'etag')
 
   app.enableCors({
-    allowedHeaders: ['accept-language', 'authorization'],
+    allowedHeaders: ['accept-language', 'authorization', 'content-type'],
     methods: ['GET', 'POST', 'PATCH', 'DELETE'],
     optionsSuccessStatus: 200,
     origin: '*'
