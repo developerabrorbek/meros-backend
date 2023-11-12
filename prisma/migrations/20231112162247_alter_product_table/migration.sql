@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "product" ALTER COLUMN "sale" DROP NOT NULL,
+ALTER COLUMN "rating" DROP NOT NULL;

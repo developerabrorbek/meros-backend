@@ -23,7 +23,6 @@ export class MinioService {
   }
 
   async uploadImage(payload: MinioUploadRequest): Promise<MinioUploadResponse> {
-    // const file = Buffer.from(payload.file.split(';base64,')[1], 'base64');
     try {
       const file = Buffer.from(payload.file, 'base64');
       const { format } = await sharp(file).metadata();
