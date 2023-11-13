@@ -20,6 +20,7 @@ enum BannerPriority {
   third  @map("third")
   fourth @map("fourth")
   fifth  @map("fifth")
+  sixth @map("sixth")
 }
 
 enum Status {
@@ -82,7 +83,8 @@ model Definition {
 model Banner {
   id     String @default(dbgenerated("GEN_RANDOM_UUID()")) @map("id") @db.Uuid
   image  String @db.VarChar()
-  status String @map("status")
+  status Status @map("status")
+  priority BannerPriority
 
   @@id([id])
   @@map("banner")
