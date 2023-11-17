@@ -5,6 +5,7 @@ import {
   Get,
   Headers,
   Param,
+  Patch,
   Post,
 } from '@nestjs/common';
 import { TranslateService } from './translate.service';
@@ -14,7 +15,7 @@ import {
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
-import { CreateTranslateDto } from './dtos';
+import { CreateTranslateDto, UpdateTranslateDto } from './dtos';
 import { Translate } from '@prisma/client';
 import { GetSingleTranslateResponse } from './interfaces';
 
@@ -62,6 +63,19 @@ export class TranslateController {
   @Post()
   async createTranslate(@Body() payload: CreateTranslateDto): Promise<void> {
     await this.#_service.createTranslate(payload);
+  }
+
+  @ApiParam({
+    name: 'id',
+    required: true,
+  })
+  @ApiBody({
+    type: UpdateTranslateDto,
+    required: true,
+  })
+  @Patch(':id')
+  async updateTranslate(@Param('id') translateId: string, @Body() payload: UpdateTranslateDto): Promise<void> {
+    await this.#_service.updateTranslate({...payload, id: translateId});
   }
 
 

@@ -11,6 +11,7 @@ import {
   CreateTranslateInterface,
   GetSingleTranslateRequest,
   GetSingleTranslateResponse,
+  UpdateTranslateRequest,
 } from './interfaces';
 
 @Injectable()
@@ -33,7 +34,7 @@ export class TranslateService {
     }
 
     const translate = await this.#_prisma.translate.create({
-      data: { code: payload.code, type: payload.type },
+      data: { code: payload.code, type: payload.type, status: 'inactive' },
     });
 
     for (const item of Object.entries(payload.definition)) {
@@ -86,6 +87,15 @@ export class TranslateService {
     };
   }
 
+  async updateTranslate(payload: UpdateTranslateRequest): Promise<void> {
+    await this.#_checkTranslate(payload.id);
+    await this.#_checkActiveTranslate(payload.id);
+    await this.#_prisma.translate.update({
+      where: { id: payload.id },
+      data: { status: payload.status },
+    });
+  }
+
   async deleteTranslate(id: string) {
     await this.#_checkUUID(id);
 
@@ -116,6 +126,15 @@ export class TranslateService {
 
     if (translate)
       throw new BadRequestException(`Translate ${code} is already available`);
+  }
+
+  async #_checkActiveTranslate(id: string): Promise<void> {
+    const translate = await this.#_prisma.translate.findFirst({
+      where: { id },
+    });
+
+    if (translate.status == 'active')
+      throw new ConflictException(`Translate is already in use`);
   }
 
   async #_checkUUID(id: string): Promise<void> {
