@@ -6,7 +6,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { Client } from 'minio';
 import { MinioUploadRequest, MinioUploadResponse } from './interfaces';
-import * as sharp from 'sharp';
+import sharp from 'sharp';
 import { randomUUID } from 'crypto';
 
 @Injectable()

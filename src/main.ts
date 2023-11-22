@@ -14,7 +14,7 @@ async function bootstrap() {
   app.disable('x-powered-by', 'X-Powered-By', 'etag');
 
   app.enableCors({
-    allowedHeaders: ['accept-language', 'authorization', 'content-type'],
+    allowedHeaders: ['accept-language', 'authorization', 'content-type', 'refresh-token'],
     methods: ['GET', 'POST', 'PATCH', 'DELETE'],
     optionsSuccessStatus: 200,
     origin: '*',

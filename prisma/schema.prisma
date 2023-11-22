@@ -124,7 +124,7 @@ model Product {
 
 model User {
   id         String       @default(dbgenerated("GEN_RANDOM_UUID()")) @map("id") @db.Uuid
-  name       String       @map("name") @db.Uuid
+  name       String       @map("name") @db.VarChar()
   year       String?       @map("year") @db.VarChar(4)
   gender     GenderType   @map("gender")
   image      String?      @map("image") @db.VarChar()
