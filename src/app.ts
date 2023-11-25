@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { JWTConfig, databaseConfig, minioConfigs } from './config';
 import { PrismaModule } from 'prisma/prisma.module';
-import { AuthModule, BannerModule, CategoryModule, LanguageModule, ProductModule, TranslateModule } from 'modules';
+import { AuthModule, BannerModule, CategoryModule, LanguageModule, ProductModule, TranslateModule, UserModule } from 'modules';
 import { MinioModule } from 'client';
 
 @Module({
@@ -19,6 +19,7 @@ import { MinioModule } from 'client';
     ProductModule,
     BannerModule,
     AuthModule,
+    UserModule,
   ],
 })
 export class AppModule {}
