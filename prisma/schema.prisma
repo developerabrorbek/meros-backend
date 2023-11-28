@@ -41,8 +41,9 @@ enum RolesType {
 
 enum OrderStatus {
   completed @map("completed")
-  shipped   @map("shippped")
+  shipped   @map("shipped")
   cancelled @map("cancelled")
+  ordered @map("ordered")
 }
 
 model Language {
