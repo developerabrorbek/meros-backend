@@ -155,6 +155,7 @@ export class AuthService {
   }
 
   async logout(accessToken: string): Promise<void> {
+    if(!accessToken.includes("Bearer")) throw new ConflictException('Give valid access token with Bearer')
     const token = accessToken.replace('Bearer ', '');
     if (!isJWT(token)) {
       throw new ConflictException(

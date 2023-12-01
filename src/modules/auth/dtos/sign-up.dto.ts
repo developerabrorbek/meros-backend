@@ -1,6 +1,6 @@
 import { $Enums } from "@prisma/client";
 import { SingupRequest } from "../interfaces";
-import { IsEmail, IsEnum, IsString, Matches } from "class-validator";
+import { IsEmail, IsEnum, IsOptional, IsString, Matches } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class SignUpDto implements SingupRequest {
@@ -20,6 +20,7 @@ export class SignUpDto implements SingupRequest {
     example: 'device ip for mobile developers'
   })
   @IsString()
+  @IsOptional()
   ip?: string;
 
   @ApiProperty({
@@ -45,6 +46,7 @@ export class SignUpDto implements SingupRequest {
     example: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'
   })
   @IsString()
+  @IsOptional()
   userAgent?: string;
 
   @ApiProperty({

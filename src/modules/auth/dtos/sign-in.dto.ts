@@ -1,4 +1,4 @@
-import { IsString } from "class-validator";
+import { IsOptional, IsString } from "class-validator";
 import { SignInRequest } from "../interfaces";
 import { ApiProperty } from "@nestjs/swagger";
 
@@ -19,6 +19,7 @@ export class SignInDto implements SignInRequest {
     example: '',
     nullable: true,
   })
+  @IsOptional()
   @IsString()
   ip?: string;
 
@@ -26,6 +27,7 @@ export class SignInDto implements SignInRequest {
     example: 'ip for mobile',
     nullable: true,
   })
+  @IsOptional()
   @IsString()
   userAgent?: string;
 }

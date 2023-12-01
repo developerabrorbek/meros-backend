@@ -49,12 +49,12 @@ export class AuthController {
   }
 
   @ApiHeader({
-    name: 'authorization',
+    name: 'Authorization',
+    example: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
     required: true,
-    example: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
   })
   @Delete('/logout')
-  async logout(@Headers('authorization') accessToken: string): Promise<void>{
-    await this.#_service.logout(accessToken)
+  async logout(@Headers('Authorization') refreshToken: string): Promise<void>{
+    console.log(refreshToken)
   }
 }

@@ -6,7 +6,8 @@ import {
   Param,
   Patch,
   Post,
-  Headers
+  Headers,
+  SetMetadata,
 } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto, UpdateCategoryDto } from './dtos';
@@ -30,6 +31,7 @@ export class CategoryController {
     required: true,
     example: 'uz'
   })
+  @SetMetadata("roles", "all")
   @Get()
   async getCategoryList(
     @Headers('accept-language') languageCode: string,
