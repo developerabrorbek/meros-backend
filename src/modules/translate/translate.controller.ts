@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  SetMetadata,
 } from '@nestjs/common';
 import { TranslateService } from './translate.service';
 import {
@@ -31,6 +32,7 @@ export class TranslateController {
     this.#_service = service;
   }
 
+  @SetMetadata("roles", ["admin", "super_admin"])
   @Get()
   async getTranslateList(): Promise<Translate[]> {
     return await this.#_service.getTranslateList();
@@ -45,6 +47,7 @@ export class TranslateController {
     name: 'id',
     required: true,
   })
+  @SetMetadata("roles", "all")
   @Get(':id')
   async retrieveSingleTranslate(
     @Headers('accept-language') languageCode: string,
@@ -60,6 +63,7 @@ export class TranslateController {
     type: CreateTranslateDto,
     required: true,
   })
+  @SetMetadata("roles", ["admin", "super_admin"])
   @Post()
   async createTranslate(@Body() payload: CreateTranslateDto): Promise<void> {
     await this.#_service.createTranslate(payload);
@@ -73,6 +77,7 @@ export class TranslateController {
     type: UpdateTranslateDto,
     required: true,
   })
+  @SetMetadata("roles", ["admin", "super_admin"])
   @Patch(':id')
   async updateTranslate(@Param('id') translateId: string, @Body() payload: UpdateTranslateDto): Promise<void> {
     await this.#_service.updateTranslate({...payload, id: translateId});
@@ -83,6 +88,7 @@ export class TranslateController {
     name: 'id',
     required: true,
   })
+  @SetMetadata("roles", ["admin", "super_admin"])
   @Delete(':id')
   async deleteTranslate(@Param('id') translateId: string): Promise<void> {
     await this.#_service.deleteTranslate(translateId);

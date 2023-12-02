@@ -42,6 +42,7 @@ export class CategoryController {
   @ApiBody({
     type: CreateCategoryDto,
   })
+  @SetMetadata("roles", ["admin", "super_admin"])
   @Post()
   async createCategory(@Body() payload: CreateCategoryDto): Promise<void> {
     await this.#_service.createCategory(payload);
@@ -51,6 +52,7 @@ export class CategoryController {
     type: UpdateCategoryDto,
     required: true,
   })
+  @SetMetadata("roles", ["admin", "super_admin"])
   @Patch(':id')
   async updateCategory(
     @Param('id') id: string,
@@ -59,6 +61,7 @@ export class CategoryController {
     await this.#_service.updateCategory({ ...payload, id });
   }
 
+  @SetMetadata("roles", ["admin", "super_admin"])
   @Delete(':id')
   async deleteCategory(@Param('id') id: string): Promise<void> {
     await this.#_service.deleteCategory(id);

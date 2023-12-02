@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  SetMetadata,
 } from '@nestjs/common';
 import { ApiBody, ApiHeader, ApiParam, ApiTags } from '@nestjs/swagger';
 import { ProductService } from './product.service';
@@ -30,6 +31,7 @@ export class ProductController {
     required: true,
     example: 'uz',
   })
+  @SetMetadata("roles", "all")
   @Get()
   async getProductList(
     @Headers('accept-language') languageCode: string,
@@ -46,6 +48,7 @@ export class ProductController {
     required: true,
     example: 'uz',
   })
+  @SetMetadata("roles", "all")
   @Get('by-category/:id')
   async getProductsByCategory(
     @Param('id') categoryId: string,
@@ -63,6 +66,7 @@ export class ProductController {
     name: 'id',
     example: 'c3171463-7de0-4347-a172-2b228c46d27f',
   })
+  @SetMetadata("roles", "all")
   @Get('single/:id')
   async getSingleProduct(
     @Param('id') id: string,
@@ -75,6 +79,7 @@ export class ProductController {
     type: CreateProductDto,
     required: true,
   })
+  @SetMetadata("roles", ["admin", "super_admin"])
   @Post()
   async createProduct(@Body() payload: CreateProductDto): Promise<void> {
     await this.#_service.createProduct(payload);
@@ -84,6 +89,7 @@ export class ProductController {
     name: 'id',
     example: 'c3171463-7de0-4347-a172-2b228c46d27f',
   })
+  @SetMetadata("roles", ["admin", "super_admin"])
   @Patch(':id')
   async updateProduct(
     @Body() payload: UpdateProductDto,
@@ -96,6 +102,7 @@ export class ProductController {
     name: 'id',
     example: 'c3171463-7de0-4347-a172-2b228c46d27f',
   })
+  @SetMetadata("roles", ["admin", "super_admin"])
   @Delete(':id')
   async deleteProduct(@Param('id') id: string): Promise<void> {
     await this.#_service.deleteProduct(id);

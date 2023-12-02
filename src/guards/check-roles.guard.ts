@@ -31,6 +31,7 @@ export class CheckRolesGuard implements CanActivate {
       [context.getHandler(), context.getClass()],
     );
 
+
     if (requiredRoles == 'all') {
       return true;
     }

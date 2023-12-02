@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, Param } from '@nestjs/common';
+import { Controller, Delete, Get, Param, SetMetadata } from '@nestjs/common';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { UserDeviceService } from './user-device.service';
 import { UserDevice } from '@prisma/client';
@@ -12,6 +12,7 @@ export class UserDeviceController {
     this.#_service = service;
   }
 
+  @SetMetadata("roles", "all")
   @Get()
   async getUserDeviceList(): Promise<UserDevice[]> {
     return await this.#_service.getUserDeviceList();
@@ -23,6 +24,7 @@ export class UserDeviceController {
     required: true,
     description: "Must be UUID 4"
   })
+  @SetMetadata("roles", "all")
   @Get(':id')
   async getSingleUserDevice(@Param('id') id: string): Promise<UserDevice> {
     return await this.#_service.getSingleUserDevice(id);
@@ -34,6 +36,7 @@ export class UserDeviceController {
     required: true,
     description: "Must be UUID 4"
   })
+  @SetMetadata("roles", "all")
   @Delete(':id')
   async deleteUserDevice(@Param('id') id: string): Promise<void> {
     await this.#_service.deleteUserDevice(id);
